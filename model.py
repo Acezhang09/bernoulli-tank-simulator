@@ -81,6 +81,9 @@ def solve_friction_factor(L_pipe, f_pipe=None, t_joint=False):
     # given a guess for f, iteratively go through to solve for f
         # once the colebrook eq = 0, we've found f
     f_solution = newton(func=func, x0=f_guess, maxiter=50) # fprime=func_deriv
+        # secant method based on 2 initial guesses
+        # since we're just passing one guess in, it auto picks a second one
+            # guess 2: p1 = x0 * (1 + 1e-4)
     return f_solution
 
 def integrand_t_joint(h, f_pipe, L_pipe, f_joint):

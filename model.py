@@ -19,7 +19,7 @@ k_pipe = 0.5  # constant (pipe entrace pressure loss value)
 L_outlet = 0.02 # length of one side of outlet pipe, meters
 d_outlet = 0.01125 # diameter of t-joint outlet, meters
 area_outlet = math.pi * ((d_outlet / 2) ** 2)
-k_joint = 2.0 # minor loss constant for branching flow t-joint
+k_joint = 1.0 # minor loss constant for branching flow t-joint
 
 # https://wiki.anton-paar.com/en/water/ @ 20 degrees celcius
     # using normal temperature pressure (NTP)
@@ -103,7 +103,6 @@ def calculate_drain_time(L_pipe):
 def calculate_drain_time_with_tjoint(L_pipe):
     # find friction factor of the pipe first
     f_pipe = solve_friction_factor(L_pipe)
-    print(f_pipe)
     f_joint = solve_friction_factor(L_pipe, f_pipe=f_pipe, t_joint=True)
     integral_value, _ = quad(integrand_t_joint, ho, hf, args=(f_pipe, L_pipe, f_joint))
     
@@ -131,4 +130,8 @@ if __name__ == "__main__":
     drain_time_60 = calculate_drain_time(0.6)
     print('{:<20} {:<30} {:<20}'.format("0.6", drain_time_60, calculate_error(0.6, drain_time_60)) )
     print("\n T-JOINT RESULTS\n_______")
+    print('{:<20s} {:<30s} {:<20s}'.format("Pipe length (L)", "Time to drain (seconds)", "Error (%)"))
     print('{:<20} {:<30} {:<20}'.format("0.2", calculate_drain_time_with_tjoint(0.2), "N/A") )
+    print('{:<20} {:<30} {:<20}'.format("0.3", calculate_drain_time_with_tjoint(0.3), "N/A") )
+    print('{:<20} {:<30} {:<20}'.format("0.4", calculate_drain_time_with_tjoint(0.4), "N/A") )
+    print('{:<20} {:<30} {:<20}'.format("0.6", calculate_drain_time_with_tjoint(0.6), "N/A") )
